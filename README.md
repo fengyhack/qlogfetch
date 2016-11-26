@@ -14,7 +14,7 @@
 |类型|适用平台|下载链接|
 |----|-------|------|
 |命令行工具|Windows, Linux, Mac|[]()|
-|图形工具|Windows|[qlogfetch-v1.0.0.zip](http://devtools.qiniu.com/qlogfetch-v1.0.2.zip)|
+|图形工具|Windows|[qlogfetch-v1.0.2.zip](http://devtools.qiniu.com/qlogfetch-v1.0.2.zip)|
 
 ## 命令行工具使用
 
