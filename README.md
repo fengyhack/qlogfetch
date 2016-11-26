@@ -14,7 +14,7 @@
 |类型|适用平台|下载链接|
 |----|-------|------|
 |命令行工具|Windows, Linux, Mac|[]()|
-|图形工具|Windows|[]()|
+|图形工具|Windows|[qlogfetch-v1.0.0.zip](http://devtools.qiniu.com/qlogfetch-v1.0.2.zip)|
 
 ## 命令行工具使用
 
@@ -22,8 +22,8 @@
 |------|----------|
 |reg|设置当前用户的`AccessKey`和`SecretKey`|
 |info|显示当前设置的`AccessKey`和`SecretKey`|
-|listlog|列出某日指定域名的日志文件列表|
-|downlog|下载指定日期某域名下的所有日志文件|
+|listlog|列出指定日期，指定域名的日志文件列表|
+|downlog|下载指定日期，指定域名下的所有日志文件|
 |domains|查询账户下的所有域名|
 
 由于查询日志和下载日志都需要七牛的API鉴权，所以我们在运行命令之前，需要设置下账号对应的`AccessKey`和`SecretKey`，它们可以从七牛的后台[这里](https://portal.qiniu.com/user/key)获取。
@@ -86,4 +86,14 @@ qlogfetch -h
 ```
 qlogfetch <cmd>
 ```
+
+例如：
+
+```
+qlogfetch listlog
+```
+
+就可以显示`listlog`命令的使用方式。
+
+
 
