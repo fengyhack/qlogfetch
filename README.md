@@ -1,63 +1,88 @@
 # qlogfetch
-融合CDN日志下载工具
 
-### 简介
-qlogFetch是一个七牛CDN日志文件查询及下载的命令行工具。
+## 简介
 
+融合CDN日志查询和下载工具，该工具是根据七牛的[融合CDN日志接口](http://developer.qiniu.com/article/fusion/api/log.html)开发的。
+本工具提供有两种类型，一种是命令行工具，适用于Windows，Linux，Mac平台，另外一种是Windows下面的图形工具。
 
-### 使用
-调用七牛的API需要一对`AccessKey`和`SecretKey`，这个可以从七牛的后台的账号设置->[密钥](https://portal.qiniu.com/user/key)获取。
+## 安装
+
+本组工具不需要安装，直接下载即可使用，当然如果你使用的是命令行工具，记得从终端里面去运行，如果是图形工具直接双击打开即可使用。
+
+##  下载
+
+|类型|适用平台|下载链接|
+|----|-------|------|
+|命令行工具|Windows, Linux, Mac|[]()|
+|图形工具|Windows|[]()|
+
+## 命令行工具使用
+
+|命令|描述|
+|------|----------|
+|reg|设置当前用户的`AccessKey`和`SecretKey`|
+|info|显示当前设置的`AccessKey`和`SecretKey`|
+|listlog|列出某日指定域名的日志文件列表|
+|downlog|下载指定日期某域名下的所有日志文件|
+|domains|查询账户下的所有域名|
+
+由于查询日志和下载日志都需要七牛的API鉴权，所以我们在运行命令之前，需要设置下账号对应的`AccessKey`和`SecretKey`，它们可以从七牛的后台[这里](https://portal.qiniu.com/user/key)获取。
 
 首先要使用必须设置`AccessKey`和`SecretKey`。命令如下：
 
-```bash
-qlogfetch reg -ak <Access_Key> -sk <Secret_Key>
 ```
+Usage: qlogfetch reg -ak <AccessKey> -sk <SecretKey>
+	set access key and secret key
+	example: qlogfetch reg -ak 'your access key' -sk 'your secret key'
+```
+
 如果你想查看当前的`AccessKey`和`SecretKey`设置，使用命令：
 
 ```
 qlogfetch info
 ```
-### 帮助信息
-如果想获取命令帮助信息 统一采用以下方式
 
-```bash
-	qlogfetch -h
-	qlogfetch <cmd> -h
+注意为了方便多账号切换使用，工具把`AccessKey`和`SecretKey`的内容存储在命令执行的目录下面。
+
+查看当前帐号下的所有域名：
+
+```
+qlogfetch domains
 ```
 
-### 功能
+获取指定日期，某个域名的日志文件列表：
 
-|命令|描述|
-|------|----------|
-|reg|设置当前用户的AccessKey和SecretKey|
-|info|显示当前设置的AccessKey和SecretKey|
-|listlog|列出某日指定域名的日志文件列表|
-|downlog|下载指定日期某域名下的所有日志文件|
-|domains|查询账户下的所有域名|
-
-### 详解
-date请采用 20xx-xx-xx 的格式
-
-#### 1.listlog 
-> -header 为可选项
-
-```bash
-qlogfetch [-header] -date <Date> -domain <Domain>
-example: qlogfetch listlog -date '2016-11-23' -domain 'img.abc.com'
+```
+Usage: qlogfetch [-pretty] -date <Date> -domain <Domain>
+	list the log files of a domain of a date
+	example: qlogfetch listlog -date '2016-11-23' -domain 'img.abc.com'
 ```
 
+可以指定`-pretty`选项，让输出变得更可读一点，😄：
 
-##### downlow
->worker 为并发下载数,默认为1 
->如果网速不够快 不建议设置worker
-
-```bash
-qlogfetch downlog -date <Date> -domain <Domain> -dest <DestDir> -worker <Worker>
-example: qlogfetch downlog -date '2016-11-23' -domain 'img.abc.com' -dest '/tmp/logs'
+```
+qlogfetch listlog -date '2016-11-23' -domain 'img.abc.com' -pretty
 ```
 
+下载指定日期，某个域名的所有日志文件：
 
-## FeedBack
-如果使用遇到问题或者发现bug，欢迎及时反馈   \^_^
+```
+Usage: qlogfetch downlog -date <Date> -domain <Domain> -dest <DestDir> -worker <Worker>
+	donwload all the log files of a domain of a date
+	example: qlogfetch downlog -date '2016-11-23' -domain 'img.abc.com' -dest '/tmp/logs'
+```
+其中注意`-dest`的选项指本地日志的存储路径，这个下载日志的功能具有如下的特点：
+（1）支持单个日志文件的断点续传，这个很重要，因为文件一般都比较大，如果因为意外结束的话，可以直接运行原始命令进行文件的续传
+（2）支持日志文件列表的增量下载，假设有10个日志文件，第一次下载3个，后面运行原始命令，可以继续下载剩下的文件
+（3）注意为了能够实现上面的功能，命令必须在和之前相同的路径之下运行，因为相关的信息都保存在那个目录之下
+
+当然如果使用过程中，忘记了命令的用法，可以查看命令帮助信息，可以通过如下的两种方法：
+
+```
+qlogfetch -h
+```
+
+```
+qlogfetch <cmd>
+```
 
