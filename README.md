@@ -13,8 +13,9 @@
 
 |类型|适用平台|下载链接|
 |----|-------|------|
-|命令行工具|Windows, Linux, Mac|[qlogfetch-v1.0.2.zip](http://devtools.qiniu.com/qlogfetch-v1.0.2.zip)|
+|命令行工具|Windows, Linux, Mac|[qlogfetch-v1.0.5.zip](http://devtools.qiniu.com/qlogfetch-v1.0.5.zip)|
 |图形工具|Windows|[QLogFetch-win-v1.1.1.zip](http://devtools.qiniu.com/QLogFetch-win-v1.1.1.zip)|
+
 
 ## 命令行工具使用
 
@@ -53,29 +54,41 @@ qlogfetch domains
 获取指定日期，某个域名的日志文件列表：
 
 ```
-Usage: qlogfetch [-pretty] -date <Date> -domain <Domain>
+Usage: qlogfetch [-pretty] -date <Date> -domains <Domains>
 	list the log files of a domain of a date
-	example: qlogfetch listlog -date '2016-11-23' -domain 'img.abc.com'
+	example: qlogfetch listlog -date '2016-11-23' -domains 'img.abc.com'
 ```
 
 可以指定`-pretty`选项，让输出变得更可读一点，😄：
 
 ```
-qlogfetch listlog -date '2016-11-23' -domain 'img.abc.com' -pretty
+qlogfetch listlog -date '2016-11-23' -domains 'img.abc.com' -pretty
 ```
 
 下载指定日期，某个域名的所有日志文件：
 
 ```
-Usage: qlogfetch downlog -date <Date> -domain <Domain> -dest <DestDir> -worker <Worker>
+Usage: qlogfetch downlog -date <Date> -domains <Domains> -dest <DestDir> -worker <Worker>
 	donwload all the log files of a domain of a date
-	example: qlogfetch downlog -date '2016-11-23' -domain 'img.abc.com' -dest '/tmp/logs'
+	example: qlogfetch downlog -date '2016-11-23' -domains 'img.abc.com' -dest '/tmp/logs'
 ```
 其中注意`-dest`的选项指本地日志的存储路径，这个下载日志的功能具有如下的特点：
 
 1. 支持单个日志文件的断点续传，这个很重要，因为文件一般都比较大，如果因为意外结束的话，可以直接运行原始命令进行文件的续传
 2. 支持日志文件列表的增量下载，假设有10个日志文件，第一次下载3个，后面运行原始命令，可以继续下载剩下的文件
 3. 注意为了能够实现上面的功能，命令必须在和之前相同的路径之下运行，因为相关的信息都保存在那个目录之下
+
+
+当然如果希望同时列举多个域名某天的日志列表或者下载多个域名某天的日志文件时，可以指定多个域名，每个域名用分号（;）分开。
+例如：
+
+```
+qlogfetch listlog -date '2016-11-23' -domains 'img.abc.com;video.abc.com' -pretty
+```
+
+```
+qlogfetch downlog -date '2016-11-23' -domains 'img.abc.com;video.abc.com' -dest '/tmp/logs'
+```
 
 当然如果使用过程中，忘记了命令的用法，可以查看命令帮助信息，可以通过如下的两种方法：
 
